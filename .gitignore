@@ -176,9 +176,9 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 # ignore datasets
-holidays_events.csv
-oil.csv
-stores.csv
-test.csv
-train.csv
-transactions.csv
+data/
+submit/
+
+# ignore model
+artifacts/
+catboost_info/
