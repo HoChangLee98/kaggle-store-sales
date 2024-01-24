@@ -1,0 +1,16 @@
+version: baseline_0
+model: catboost
+params:
+  train_params:
+    loss_function: RMSE
+    iterations: 1000
+    learning_rate: 0.01
+    depth: 4 
+    # l2_leaf_reg: 64  
+    random_seed: 0
+     
+  model_params: 
+    cat_features: ['store_nbr', 'family', 'year', 'month', 'day', 'weekday', 'quarter'] 
+    verbose: False 
+    # plot: False
+    early_stopping_rounds: 10 
