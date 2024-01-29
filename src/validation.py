@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_log_error
 from tqdm.auto import tqdm
 
 class Validator:
-    def __init__(self, cv:bool=None, model:object=None, X:pd.DataFrame=None, y:pd.DataFrame=None, method:str="block"):
+    def __init__(self, cv:bool=None, model:object=None, X:pd.DataFrame=None, y:pd.DataFrame=None, method:str="block", folder_path:str="./artifacts"):
         '''
 
         Args:
@@ -19,7 +19,8 @@ class Validator:
         self.model = model
         self.X = X
         self.y = y
-        self.method=method
+        self.method = method
+        self.folder_path = folder_path
         
     def custom_walk_forward(self):
         '''walk forward 방법으로 train set과 validation set을 구분해주는 함수
@@ -116,12 +117,12 @@ class Validator:
         return result
     
     def load_cv_result(self, version:str):
-        with open(f"./artifacts/cv_result_{version}.pkl", "rb") as f:
+        with open(f"{self.folder_path}/cv_result_{version}.pkl", "rb") as f:
             cv_result = pickle.load(f)
             
         return cv_result
     
     def save_cv_result(self, cv_result:dict, version:str):
-        with open(f"./artifacts/cv_result_{version}.pkl", "wb") as f:
+        with open(f"{self.folder_path}/cv_result_{version}.pkl", "wb") as f:
             pickle.dump(cv_result, f)
         
