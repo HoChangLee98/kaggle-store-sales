@@ -20,7 +20,7 @@ def main(args):
         config = yaml.full_load(f)
 
     dataloader = DataLoader()
-    datasets = dataloader.generate()        
+    datasets = dataloader.generate()    
     
     model = Trainer(
         model_name=config["model"], 
@@ -30,7 +30,7 @@ def main(args):
     trained_model = model.load_model(config["version"])
     y_pred = trained_model.predict(datasets["X_test"].drop(columns="date"))
     y_pred = np.array(y_pred)
-    y_pred = np.where(y_pred < 100, 0, y_pred)
+    y_pred = np.where(y_pred < 1, 0, y_pred)
     generate_submission(y_pred, config["model"], config["version"])
         
 if __name__ == "__main__":
