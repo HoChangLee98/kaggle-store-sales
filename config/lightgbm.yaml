@@ -1,0 +1,18 @@
+version: baseline_0
+model: lightgbm
+params:
+  train_params:
+    n_estimators: 1000
+    learning_rate: 0.01
+    num_leaves: 31
+    random_seed: 0
+    max_depth: -1 
+    min_child_weight: 0.001
+    min_child_samples: 20
+    # early_stopping_round: 100
+    # reg_alpha: 0
+    reg_lambda: 0
+    verbosity: -1
+     
+  model_params: 
+    categorical_feature: [store_nbr, family, year, month, day, weekday, quarter]

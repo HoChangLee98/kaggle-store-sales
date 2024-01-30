@@ -13,4 +13,4 @@ params:
     cat_features: ['store_nbr', 'family', 'year', 'month', 'day', 'weekday', 'quarter'] 
     verbose: False 
     # plot: False
-    early_stopping_rounds: 10 
+    early_stopping_rounds: 100 
