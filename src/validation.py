@@ -9,17 +9,19 @@ from sklearn.metrics import mean_squared_log_error
 from tqdm.auto import tqdm
 
 class Validator:
-    def __init__(self, cv:bool=None, model:object=None, X:pd.DataFrame=None, y:pd.DataFrame=None, method:str="block"):
+    def __init__(self, model_name:str, cv:bool=None, model:object=None, X:pd.DataFrame=None, y:pd.DataFrame=None, method:str="block", folder_path:str="./artifacts"):
         '''
 
         Args:
             method: "block" 과 "forward" 중 방법을 선택
         '''
+        self.model_name = model_name
         self.cv = cv
         self.model = model
         self.X = X
         self.y = y
-        self.method=method
+        self.method = method
+        self.folder_path = folder_path
         
     def custom_walk_forward(self):
         '''walk forward 방법으로 train set과 validation set을 구분해주는 함수
@@ -53,8 +55,9 @@ class Validator:
             temp_model = deepcopy(self.model)
             temp_model.train(self.cv, X_train, y_train, X_valid, y_valid)
             y_val_pred = temp_model.predict(X_valid)
+            # y_val_pred = np.round(np.expm1(y_val_pred))
             y_val_pred = np.array(y_val_pred)
-            y_val_pred = np.where(y_val_pred < 100, 0, y_val_pred)
+            y_val_pred = np.where(y_val_pred < 1, 0, y_val_pred)
             
             rmsle = mean_squared_log_error(y_valid, y_val_pred)
             print(f"    rmsle for {i}: {rmsle}")
@@ -100,8 +103,9 @@ class Validator:
             temp_model = deepcopy(self.model)
             temp_model.train(self.cv, X_train, y_train, X_valid, y_valid)
             y_val_pred = temp_model.predict(X_valid)
+            # y_val_pred = np.round(np.expm1(y_val_pred))
             y_val_pred = np.array(y_val_pred)
-            y_val_pred = np.where(y_val_pred < 100, 0, y_val_pred)
+            y_val_pred = np.where(y_val_pred < 1, 0, y_val_pred)
             
             rmsle = mean_squared_log_error(y_valid, y_val_pred)
             print(f"    rmsle for {i}: {rmsle}")
@@ -116,12 +120,12 @@ class Validator:
         return result
     
     def load_cv_result(self, version:str):
-        with open(f"./artifacts/cv_result_{version}.pkl", "rb") as f:
+        with open(f"{self.folder_path}/cv_result_{self.model_name}_{version}.pkl", "rb") as f:
             cv_result = pickle.load(f)
             
         return cv_result
     
     def save_cv_result(self, cv_result:dict, version:str):
-        with open(f"./artifacts/cv_result_{version}.pkl", "wb") as f:
+        with open(f"{self.folder_path}/cv_result_{self.model_name}_{version}.pkl", "wb") as f:
             pickle.dump(cv_result, f)
-        
+    

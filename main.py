@@ -25,7 +25,7 @@ def main(args):
         config = yaml.full_load(f)
 
     dataloader = DataLoader()
-    datasets = dataloader.generate()        
+    datasets = dataloader.generate()           
 
     model = Trainer(
         model_name=config["model"], 
@@ -34,6 +34,7 @@ def main(args):
     
     if args.mode == "cv":
         validator = Validator(
+            model_name=config["model"], 
             cv=True, 
             model=model, 
             X=datasets["X_train"], 
@@ -44,13 +45,13 @@ def main(args):
         validator.save_cv_result(cv_result=cv_result, version=config["version"])
     
     elif args.mode == "train":
-        X_train, y_train = get_train_set(datasets=datasets)
+        X_train, y_train = get_blocked_split_trainset(datasets=datasets)
         model.train(cv=False, X_train=X_train, y_train=y_train)   
         model.save_model(version=config["version"])
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--yaml", "-y", type=str, default="baseline", help="name of yaml file")    
+    parser.add_argument("--yaml", "-y", type=str, default="catboost", help="name of yaml file")    
     parser.add_argument("--seed", "-s", type=int, default=0, help="seed number")
     parser.add_argument("--mode", "-m", type=str, default="cv", choices=["cv", "train"], help="choose trainer mode")
     args = parser.parse_args()

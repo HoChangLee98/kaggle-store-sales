@@ -40,6 +40,7 @@ class Trainer:
         model_name:str, 
         params:dict=None, 
         ):
+        self.model_name = model_name
         self.train_params = params["train_params"]
         self.model_params = params["model_params"]
         if model_name == "catboost":
@@ -75,19 +76,13 @@ class Trainer:
         
         return pred
 
-    def load_model(self, version:str):
-        with open(f"./artifacts/model_{version}.pkl", "rb") as f:
+    def load_model(self, version:str, folder_path:str="./artifacts"):
+        with open(f"{folder_path}/{self.model_name}_{version}.pkl", "rb") as f:
             trained_model = pickle.load(f)
             
         return trained_model
 
-    def save_model(self, version:str):
-        with open(f"./artifacts/model_{version}.pkl", "wb") as f:
+    def save_model(self, version:str, folder_path:str="./artifacts"):
+        with open(f"{folder_path}/{self.model_name}_{version}.pkl", "wb") as f:
             pickle.dump(self.model, f)
         
-    # def after_process(self, y):
-    #     for i in range(len(y)):
-    #         if y[i] < 0:
-    #             y[i] = 0
-        
-    #     return y     

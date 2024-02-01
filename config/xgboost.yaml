@@ -1,0 +1,25 @@
+version: baseline_0
+model: xgboost
+params:
+  train_params:
+    # colsample_bylevel: (0, 1]
+    # colsample_bytree: (0, 1]
+    # gamma: [0,:]
+    learning_rate: 0.01
+    # max_delta_step: [0,:]
+    max_depth: 4 
+    n_estimators: 1000
+    reg_lambda: 0
+    silent: True
+    verbosity: 0
+    eval_metric: rmsle
+    seed: 0
+    enable_categorical: True
+    # subsample: (0,1]
+     
+  model_params: 
+    # cat_features: ['store_nbr', 'family', 'year', 'month', 'day', 'weekday', 'quarter'] 
+    
+    verbose: False 
+    # plot: False
+    early_stopping_rounds: 100
